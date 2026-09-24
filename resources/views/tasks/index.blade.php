@@ -141,13 +141,18 @@
         .task-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            gap: 16px;
             padding: 8px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .task-item:last-child {
             border-bottom: none;
+        }
+
+        .task-info {
+            flex: 1;
         }
 
         .task-info h3 {
@@ -296,7 +301,7 @@
                         @endif
                         @if($task->description)
                             <p class="description">{{ $task->description }}</p>
-                        @endif>
+                        @endif
                     </div>
 
                     <div class="action-buttons">
