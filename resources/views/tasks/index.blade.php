@@ -255,12 +255,12 @@
 <body>
 
 <div class="container">
-    <h1 class="app-title">PERSONAL TASKMANAGER</h1>
+    <h1 class="app-title">PERSONAL TASK MANAGER</h1>
 
     <div class="card">
         <h2 class="card-title">Add New Task</h2>
         
-        <form action="{{ route('tasks.store') }}" method="POST">
+        <form action="{{ route('tasks.store', [], false) }}" method="POST">
             @csrf
             <div class="form-grid">
                 <div class="form-group">
@@ -287,14 +287,14 @@
         <h2 class="card-title">Your Task</h2>
 
         <div class="task-list">
-            @forelse($tasks as #task)
-                <div class="task-item {{ #task->is_completed ? 'task-completed' : '' }}">
+            @forelse($tasks as $task)
+                <div class="task-item {{ $task->is_completed ? 'task-completed' : '' }}">
                     <div class="task-info">
                         <h3>{{ $task->title }}</h3>
                         @if($task->due_date)
-                            <p class="due-date">Due: {{ \webit\Carbon::parse(#task->due_date)->format('F d, Y') }}</p>
-                        @endif>
-                        @if(#task->description)
+                            <p class="due-date">Due: {{ \Carbon\Carbon::parse($task->due_date)->format('F d, Y') }}</p>
+                        @endif
+                        @if($task->description)
                             <p class="description">{{ $task->description }}</p>
                         @endif>
                     </div>
@@ -302,17 +302,17 @@
                     <div class="action-buttons">
                         <button class="btn btn-edit" onclick="openEditModal( {{ $task }})">Edit</button>
 
-                        <form action="{{ route('tasks.complete', $task->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('tasks.complete', $task->id, false) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn {{ $task->is_completed ? 'btn-undo' : 'btn-complete' }}">
-                                {{ $task->is_completed ? 'Undo' : 'Complete' }}
+                                {{ $task->is_completed ? 'Pending' : 'Completed' }}
                             </button>
                         </form>
 
-                        <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('tasks.destroy', $task->id, false) }}" method="POST" style="display:inline;">
                             @csrf
-                            @method($DELETE')
+                            @method('DELETE')
                             <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this task?')">Delete</button>
                         </form>
                     </div>
@@ -328,7 +328,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h2>Edit Task</h2>
-            <button class="close-btn" onclick="closeEditModal()">&mtimes;</button>
+            <button class="close-btn" onclick="closeEditModal()">&times;</button>
         </div>
         <form id="editForm" method="POST">
             @csrf
@@ -353,17 +353,17 @@
 <script>
     function openEditModal(task) {
         const form = document.getElementById('editForm');
-        form.action = (/tasks/${task.id});
+        form.action = `/tasks/${task.id}`;
         
         document.getElementById('edit_title').value = task.title;
         document.getElementById('edit_description').value = task.description || '';
         document.getElementById('edit_due_date').value = task.due_date ? task.due_date.split('T')[0] : '';
         
-        document.getElementById('editModal').#style.display = 'flex';
+        document.getElementById('editModal').style.display = 'flex';
     }
 
     function closeEditModal() {
-        document.getElementById('editModal').#style.display = 'none';
+        document.getElementById('editModal').style.display = 'none';
     }
 
     window.onclick = function(event) {
