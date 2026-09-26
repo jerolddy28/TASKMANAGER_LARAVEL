@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="ULF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Task Manager</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@00;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -255,6 +255,313 @@
             font-size: 1.5rem;
             cursor: pointer;
         }
+
+        :root {
+            --ink: #071009;
+            --panel: rgba(9, 20, 11, 0.94);
+            --panel-raised: #102315;
+            --green: #7fff00;
+            --green-bright: #a8ff32;
+            --green-muted: #b5d5ae;
+            --text: #f2f7ed;
+            --line: rgba(127, 255, 0, 0.25);
+        }
+
+        * {
+            font-family: 'Barlow', sans-serif;
+        }
+
+        body {
+            background-color: var(--ink);
+            background-image:
+                linear-gradient(145deg, #050806 0%, #0a170c 54%, #122316 100%),
+                repeating-linear-gradient(0deg, transparent 0 39px, rgba(127, 255, 0, 0.035) 40px),
+                repeating-linear-gradient(90deg, transparent 0 39px, rgba(127, 255, 0, 0.035) 40px);
+            background-attachment: fixed;
+            color: var(--text);
+            padding: 48px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            align-items: stretch;
+        }
+
+        .app-kicker {
+            color: var(--green);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        h1.app-title {
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-bottom: 28px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(127, 255, 0, 0.2);
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(15, 31, 17, 0.98), var(--panel));
+            backdrop-filter: none;
+            border: 1px solid var(--line);
+            border-top: 2px solid rgba(127, 255, 0, 0.65);
+            border-radius: 8px;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+            margin-bottom: 20px;
+            padding: 26px 28px;
+        }
+
+        .card-title,
+        .modal-header h2 {
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .form-grid {
+            gap: 18px;
+        }
+
+        label {
+            color: #d9e6d4;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            background: #0a140c;
+            border: 1px solid rgba(181, 213, 174, 0.28);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 0.95rem;
+            padding: 11px 13px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="date"] {
+            color-scheme: dark;
+        }
+
+        input[type="text"]::placeholder {
+            color: #809180;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            background: #0a140c;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(127, 255, 0, 0.12);
+        }
+
+        .btn-submit {
+            background: var(--green);
+            border-radius: 6px;
+            color: #071009;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 8px;
+            padding: 12px 16px;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--green-bright);
+            transform: translateY(-1px);
+        }
+
+        .task-list {
+            gap: 0;
+        }
+
+        .task-item {
+            align-items: center;
+            border-bottom: 1px solid rgba(181, 213, 174, 0.14);
+            gap: 20px;
+            padding: 18px 0;
+        }
+
+        .task-info h3 {
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.25rem;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .task-completed .task-info h3 {
+            opacity: 0.68;
+        }
+
+        .task-heading {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-bottom: 5px;
+        }
+
+        .task-status {
+            align-items: center;
+            border: 1px solid rgba(181, 213, 174, 0.25);
+            border-radius: 999px;
+            color: #d0ddca;
+            display: inline-flex;
+            font-size: 0.72rem;
+            font-weight: 600;
+            gap: 6px;
+            line-height: 1;
+            padding: 5px 9px;
+            white-space: nowrap;
+        }
+
+        .task-status::before {
+            background: #aeb9a9;
+            border-radius: 50%;
+            content: '';
+            height: 6px;
+            width: 6px;
+        }
+
+        .task-status--completed {
+            background: rgba(127, 255, 0, 0.1);
+            border-color: rgba(127, 255, 0, 0.42);
+            color: var(--green-bright);
+        }
+
+        .task-status--completed::before {
+            background: var(--green);
+            box-shadow: 0 0 8px rgba(127, 255, 0, 0.8);
+        }
+
+        .task-info p.due-date,
+        .task-info p.description {
+            color: var(--green-muted);
+            font-size: 0.85rem;
+        }
+
+        .action-buttons {
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .action-buttons form {
+            display: flex;
+        }
+
+        .btn {
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            min-height: 38px;
+            padding: 8px 12px;
+            transition: background 0.2s, border-color 0.2s, transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        .btn-edit {
+            background: #1d2a20;
+            border-color: #354b39;
+            color: #e2ece0;
+        }
+
+        .btn-complete {
+            background: var(--green);
+            color: #071009;
+        }
+
+        .btn-undo {
+            background: #3d3212;
+            border-color: #786320;
+            color: #ffe58a;
+        }
+
+        .btn-delete {
+            background: #351b1b;
+            border-color: #633131;
+            color: #ffc1b9;
+        }
+
+        .modal {
+            background: rgba(1, 5, 2, 0.82);
+        }
+
+        .modal-content {
+            background: #0b170d;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: 0 18px 60px rgba(0, 0, 0, 0.65);
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin-bottom: 0;
+        }
+
+        .close-btn {
+            border-radius: 4px;
+            padding: 3px 8px;
+        }
+
+        .close-btn:hover {
+            background: rgba(127, 255, 0, 0.12);
+            color: var(--green-bright);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 28px 14px;
+            }
+
+            h1.app-title {
+                font-size: 1.9rem;
+                margin-bottom: 22px;
+            }
+
+            .card {
+                padding: 20px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .task-item {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .action-buttons {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .action-buttons form,
+            .action-buttons .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -295,7 +602,12 @@
             @forelse($tasks as $task)
                 <div class="task-item {{ $task->is_completed ? 'task-completed' : '' }}">
                     <div class="task-info">
-                        <h3>{{ $task->title }}</h3>
+                        <div class="task-heading">
+                            <h3>{{ $task->title }}</h3>
+                            <span class="task-status {{ $task->is_completed ? 'task-status--completed' : '' }}">
+                                {{ $task->is_completed ? 'Completed' : 'In progress' }}
+                            </span>
+                        </div>
                         @if($task->due_date)
                             <p class="due-date">Due: {{ \Carbon\Carbon::parse($task->due_date)->format('F d, Y') }}</p>
                         @endif
@@ -307,15 +619,15 @@
                     <div class="action-buttons">
                         <button class="btn btn-edit" onclick="openEditModal( {{ $task }})">Edit</button>
 
-                        <form action="{{ route('tasks.complete', $task->id, false) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('tasks.complete', $task->id, false) }}" method="POST">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn {{ $task->is_completed ? 'btn-undo' : 'btn-complete' }}">
-                                {{ $task->is_completed ? 'Pending' : 'Completed' }}
+                                {{ $task->is_completed ? 'Reopen task' : 'Mark complete' }}
                             </button>
                         </form>
 
-                        <form action="{{ route('tasks.destroy', $task->id, false) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('tasks.destroy', $task->id, false) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this task?')">Delete</button>
